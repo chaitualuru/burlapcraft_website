@@ -40,31 +40,128 @@
 					</header>
 					<article class='guide-content'>
 						<p>
-							 Today we are releasing BurlapCraft, a mod aimed at using <a href='https://minecraft.net/'>Minecraft</a> as a test bed for artificial 
-							 intelligence. BurlapCraft is built using <a href='http://burlap.cs.brown.edu/'>BURLAP</a> and <a href='http://www.minecraftforge.net/'>Minecraft Forge</a>, a 
+							 Today we are releasing BurlapCraft, a mod aimed at using <a href='https://minecraft.net/' target='_blank'>Minecraft</a> as a test bed for artificial 
+							 intelligence. BurlapCraft is built using <a href='http://burlap.cs.brown.edu/' target='_blank'>BURLAP</a> and <a href='http://www.minecraftforge.net/' target='_blank'>Minecraft Forge</a>, a 
 							 Minecraft API that contains hooks into base Minecraft files. In the current release, the mod contains two dungeons, each with a specific 
 							 goal that the agent needs to reach by maximizing its reward. We used BURLAP to successfully implement reinforcement learning and planning 
 							 algorithms to solve the two dungeons within Minecraft.
 							 <br><br> 
-							 To try BurlapCraft, you will need to install Minecraft Forge. WikiHow has a <a href='http://www.wikihow.com/Install-Minecraft-Forge'>step-by-step tutorial</a> 
-							 to installing Minecraft Forge and adding mods. Once you have Forge set up, you will need to drag the <a>BurlapCraft jar file</a> into the mods 
+							 To try BurlapCraft, you will need to install Minecraft Forge. WikiHow has a <a href='http://www.wikihow.com/Install-Minecraft-Forge' target='_blank'>step-by-step tutorial</a> 
+							 for installing Minecraft Forge and adding mods. Once you have Forge set up, you will need to drag the <a>BurlapCraft jar file</a> into the mods 
 							 folder and you will be good to go. We recommend disabling other mods before trying BurlapCraft.
 							 <br><br>
-							 Moving ahead, this post is specifically aimed at guiding modders through the process of <strong>getting set up with BurlapCraft, creating dungeons 
+							 Moving ahead, this post is specifically aimed at guiding you through the process of <strong>getting set up with BurlapCraft, creating dungeons 
 							 and solving them using BURLAP.</strong>
 						</p>
 						<h3>
-							Step 1: Gitting BurlapCraft
+							Gitting BurlapCraft
 						</h3>
-						<p>
-							
-						</p>
+						<ul>
+							<li>You will need to get a copy of Forge source to setup your dev environment. You should get the recommended version of 1.7.10 <a href='http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.7.10.html' target='_blank'>here</a>.
+								After it has downloaded, extract its contents (rename this folder to forge for convenience).
+							<li>Fire up your terminal/command window and navigate to the forge folder using the 'cd' command. 
+							<li>Once you are within the forge folder in the terminal/command window, you will need to run 'gradlew setupDecompWorkspace --refresh-dependencies'. 
+								 This will download all the requirements to begin modding using Minecraft Forge.
+							<br><strong>If you are on Linux or Max OS, you should always use './gradlew' instead of 'gradlew'. If this does not work, you can retry after running 
+								'chmod +x gradlew'.</strong> 
+							<li>If you develop in Eclipse, you will need to run 'gradlew eclipse' from within the forge folder. If you are using IntelliJ, open it, select 'import project', 
+								navigate to your workspace and click on build.gradle. Close IntelliJ once it finishes importing your project. Now run 'gradlew genIntellijRuns'. 
+							<li>Once the IDE is setup, your forge folder should contain the code for the example mod and should be good to go. To look at the code for the example mod, open 
+								your IDE. If it is Eclipse, use the eclipse subdirectory within the folder as your workspace. If it is IntelliJ, the project should open automatically.
+							<li>Once you acquaint yourself with the structure of the example mod, you can download the latest version of BurlapCraft by pressing the 'Download as zip' 
+								button at this <a href='https://github.com/kclauru/burlapcraft' target='_blank'>link</a>. After it has downloaded, extract its contents (if this folder is not called 
+								'src', rename it to 'src').
+							<li>Navigate to the forge folder and replace the src folder within it with the one you just downloaded. On refreshing or reopening your IDE, you should see
+								a new package for burlapcraft that contains all the java classes being used for the mod.
+							<li>You might see a lot of errors within the project. This is because you need to add the BURLAP java code library to your project to resolve the missing
+								dependencies. You can download BURLAP <a href='http://burlap.cs.brown.edu/' target='_blank'>here</a>. 
+							<li>Once you have the BURLAP jar file, import it. This should resolve all the errors.
+						</ul>
 						<h3>
-							Step 2: Installing BurlapCraft
+							Structure of BurlapCraft
 						</h3>
-						<p>
-							Download BurlapCraft from <a>here</a> and 
-						</p>
+						<p><strong>There will be a lot of BURLAP talk henceforth so this is a good time to go through a basic tutorial <a href='http://burlap.cs.brown.edu/tutorials/bd/p1.html' target='_blank'>here</a>.</strong></p>
+						<ul>
+							<li>If you open Minecraft in your IDE, you should see a src/main sub directory within which you will find the com.kcaluru.burlapcraft package. This package 
+								contains all the java classes being used for the mod. The resources being used for the mod (for example: textures and names of user created blocks or 
+								items) are within the resources folder inside src/main. For the purpose of creating a new dungeon and solving it, you will not need to worry about 
+								the resources folder. 
+							<li>BurlapCraft.java is our base mod class that contains some basic mod information (like the name and version) and also contains the initialization events.
+								The code within the initialization events gets executed when you run the mod.  
+							<li>Custom items and blocks that we created are stored in the item and block packages respectively. All the helper classes are within the helper package.
+							<li>We are using a real and a simulated domain for the purpose of learning and planning respectively. We map the simulated domain to the real domain to 
+								run actions actual minecraft for planning.
+							<strong>MIGHT NEED TO EXPLAIN OUR DOMAIN, ACTIONS, ETC. CREATE A SEPARATE DOC FOR THIS? THIS PAGE IS VERY LENGTHY ALREADY.</strong> 
+						</ul>
+						<h3>
+							Creating a Dungeon
+						</h3>
+						<h4>
+							Setup
+						</h4>
+						<ul>
+							<li>You can use any name for your dungeon. For the purpose of convenience within this guide, we are going to call it 'Bedrock'. Create a new class
+								named 'DungeonGeneratorBedrock' within the dungeongenerator package. Copy over code from one of the other dungeon generators and fix the 
+								errors by renaming the class and the constructor. 
+							<br><strong>The generate method creates the dungeon within Minecraft by setting a block at each (x, y, z) coordinate. We will modify this later.</strong>
+							<li>Open the HandlerDungeonGeneration within the handler package. Create three new public static variables - BedrockX, BedrockY and BedrockZ.
+							<li>Go down to the generateSurface method and initialize them to coordinates relative and close to the player coordinates. This will ensure 
+								that the dungeon renders as soon as the world is loaded because it is close to the player.
+							<li>Call the generate method on a new instance of your DungeonGeneratorBedrock class and pass it the following parameters - world, random, 
+								BedrockX, BedrockY and BedrockZ.
+						</ul>
+						<strong>If the dungeon you have in mind is very simple then you can just replace the code within generate with for-loops that set each block as you desire.
+							You can skip <a href='#solving'>ahead</a> if used for-loops for generation.</strong>
+						<br><br>
+						<h4>
+							Generation
+						</h4>
+						<strong>For this section, you will need to download MCEdit from <a href='http://www.mcedit.net/' target='_blank'>here</a> and a Schematic Converter from <a href='' target='_blank'>here</a>.</strong>
+						<ul>
+							<li>Once you have MCEdit, you have two options:
+								<ol>
+									<li>Create the structure in MCEdit itself (generally good for large landscapes).
+									<li>Create the stucture in a Minecraft world and then export the schematic for it using MCEdit (generally good for smaller 'dungeon-sized' 
+										structures).
+								</ol>
+							<li>Let us go ahead with option 2. Run Minecraft from your IDE, create a new world in creative mode (name the world something you can identify easily)
+								 and create your structure manually.
+							<li>After creating your structure, you can close Minecraft. Go back to MCEdit and press the 'Load World' option. We are looking for the level.dat 
+								file of the world you just created. You should be able to find it in the eclipse/saves/(your world's name) subdirectory within the forge folder. 
+							<li>Once you load the world, you need to select the dungeon structure you created from end to end and export it. Use the 'w-a-s-d' and 'i-j-k-l' keys 
+								in conjunction to navigate around the model of the world you are looking at. Press and hold the left mouse button and drag to select multiple blocks.
+							<li>After selecting your structure, press export and save the schematic file to any location (I have a schematics folder within my forge folder where 
+								I like to store all my exported files).
+							<li>Place the Schematic Converter jar file you downloaded into the same folder where you are saving your schematics. Fire up your terminal/command window 
+								and run the Schematic Converter using 'java -jar SchematicConverter.jar'.
+							<li>Choose 'New', then 'Open File' and point it to the schematic file you just created. Do not check the 'Ignore Air' option. Press 'Convert File'. It 
+								should say 'successfully converted file'. Press 'OK' and then press 'Save Code'. We will use this code within the generate method. 
+							<li>Replace every line of code within the generate method (in the DungeonGeneratorBedrock class) except the return statement with the lines within the 
+								spawn method of your saved code.
+							<li>If you run Minecraft from your IDE, you should be able to find the dungeon you created when you create a new world and join it. <strong>Remember to use 
+								coordinates close to the player for the dungeon so that you can find the dungeon easily.
+							</strong>
+						</ul>
+						<h3 id='solving'>
+							Solving the dungeon
+						</h3>
+						<h4>
+							Setup
+						</h4>
+						<ul>
+							
+						</ul>
+						<h4>
+							Solving
+						</h4>
+						<h3>
+							Useful Commands
+						</h3>
+						<ul>
+							<li>If you want to test out the mod in Minecraft, you can build your mod and zip it into a .jar file by running 'gradlew build' in your terminal/command window 
+							from within the forge folder. You can find the .jar file in the 'build/libs' subdirectory.
+							<li>If you want to launch Minecraft with your mod installed, you can run 'gradlew runClient' in your terminal/command window from within the forge folder.
+						</ul>
 					</article>
 				</div>
 			</div>
