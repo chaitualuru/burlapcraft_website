@@ -62,16 +62,19 @@
 							<li>Fire up your terminal/command window and navigate to the forge folder using the 'cd' command. 
 							<li>Once you are within the forge folder in the terminal/command window, you will need to run 'gradlew setupDecompWorkspace --refresh-dependencies'. 
 								 This will download all the requirements to begin modding using Minecraft Forge.
-							<br><strong>If you are on Linux or Max OS, you should always use './gradlew' instead of 'gradlew'. If this does not work, you can retry after running 
-								'chmod +x gradlew'.</strong> 
-							<li>If you develop in Eclipse, you will need to run 'gradlew eclipse' from within the forge folder. If you are using IntelliJ, open it, select 'import project', 
-								navigate to your workspace and click on build.gradle. Close IntelliJ once it finishes importing your project. Now run 'gradlew genIntellijRuns'. 
-							<li>Once the IDE is setup, your forge folder should contain the code for the example mod and should be good to go. To look at the code for the example mod, open 
-								your IDE. If it is Eclipse, use the eclipse subdirectory within the folder as your workspace. If it is IntelliJ, the project should open automatically.
+							<br><br>
+							<strong>If you are on Linux or Max OS, you should always use './gradlew' instead of 'gradlew'. If this does not work, you can retry after running 
+								'chmod +x gradlew'.</strong>
+							<br>
+							<strong>This guide uses Eclipse because it is the general preference for an IDE within the Minecraft modding community.</strong>
+							<br><br> 
+							<li>Next, you will need to run 'gradlew eclipse' from within the forge folder. 
+							<li>Once Eclipse is setup, your forge folder should contain the code for the example mod and should be good to go. To look at the code for the example mod, open 
+								Eclipse using the eclipse subdirectory within the forge folder as your workspace.
 							<li>Once you acquaint yourself with the structure of the example mod, you can download the latest version of BurlapCraft by pressing the 'Download as zip' 
 								button at this <a href='https://github.com/kclauru/burlapcraft' target='_blank'>link</a>. After it has downloaded, extract its contents (if this folder is not called 
 								'src', rename it to 'src').
-							<li>Navigate to the forge folder and replace the src folder within it with the one you just downloaded. On refreshing or reopening your IDE, you should see
+							<li>Navigate to the forge folder and replace the src folder within it with the one you just downloaded. On refreshing or reopening Eclipse, you should see
 								a new package for burlapcraft that contains all the java classes being used for the mod.
 							<li>You might see a lot of errors within the project. This is because you need to add the BURLAP java code library to your project to resolve the missing
 								dependencies. You can download BURLAP <a href='http://burlap.cs.brown.edu/' target='_blank'>here</a>. 
@@ -90,7 +93,7 @@
 								The code within the initialization events gets executed when you run the mod.  
 							<li>Custom items and blocks that we created are stored in the item and block packages respectively. All the helper classes are within the helper package.
 							<li>We are using a real and a simulated domain for the purpose of learning and planning respectively. We map the simulated domain to the real domain to 
-								run actions actual minecraft for planning.
+								run actions actual Minecraft for planning.
 							<strong>MIGHT NEED TO EXPLAIN OUR DOMAIN, ACTIONS, ETC. CREATE A SEPARATE DOC FOR THIS? THIS PAGE IS VERY LENGTHY ALREADY.</strong> 
 						</ul>
 						<h3>
@@ -124,7 +127,7 @@
 									<li>Create the stucture in a Minecraft world and then export the schematic for it using MCEdit (generally good for smaller 'dungeon-sized' 
 										structures).
 								</ol>
-							<li>Let us go ahead with option 2. Run Minecraft from your IDE, create a new world in creative mode (name the world something you can identify easily)
+							<li>Let us go ahead with option 2. Run Minecraft from Eclipse, create a new world in creative mode (name the world something you can identify easily)
 								 and create your structure manually.
 							<li>After creating your structure, you can close Minecraft. Go back to MCEdit and press the 'Load World' option. We are looking for the level.dat 
 								file of the world you just created. You should be able to find it in the eclipse/saves/(your world's name) subdirectory within the forge folder. 
