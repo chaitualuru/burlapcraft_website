@@ -119,7 +119,7 @@
 						<h4>
 							Generation
 						</h4>
-						<strong>For this section, you will need to download MCEdit from <a href='http://www.mcedit.net/' target='_blank'>here</a> and a Schematic Converter from <a href='' target='_blank'>here</a>.</strong>
+						<strong>For this section, you will need to download MCEdit from <a href='http://www.mcedit.net/' target='_blank'>here</a> and a Schematic Converter from <a href='http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-tools/2193206-schematic-to-java-converter-for-modders' target='_blank'>here</a>.</strong>
 						<ul>
 							<li>Once you have MCEdit, you have two options:
 								<ol>
@@ -152,11 +152,28 @@
 							Setup
 						</h4>
 						<ul>
-							
+							<li>Open the HelperNameSpace class in the helper package. Add your dungeon name (all lower case) to the end of the dungeonNameList array. We will
+								be using this array to keep track of dungeons.
+							<li>Next, open the StateGenerator class in the stategenerator package. Create three new static variables storing the dimensions of your dungeon. 
+								Scroll down and create another else-if clause that checks if the dungeonID is the same value as the index of your dungeon name within the dungeonNameList 
+								array that you just modified. Within the else-if set dungeonX, dungeonY and dungeonZ to HandlerDungeonGeneration.bedrockX, bedrockY and bedrockZ respectively. 
+								Then assign the dimension variables you created to length, width and height.
+							<li>Now, go to the CommandTeleport class in the command package and add a new case, for the array index of your dungeon name within the dungeonNameList,
+								in the switch statement for dungeonID. Within the case, set reasonable x, y, z coordinates for the player relative to (0, 0, 0) for the cornermost block in the 
+								dungeon. These coordinates will be used to teleport the player to the specified (x, y, z) position within the dungeon when you type '/tele (your dungeon name)'.
 						</ul>
 						<h4>
 							Solving
 						</h4>
+						<ul>
+							<li>To solve the dungeon you created, you will need to create a new Solver class within the solver package. Make sure that the name of your class contains either 
+								'Planning' or 'Learning' within it or create two separate classes if you wish to try both. Copy over code from one of the Solver classes for the other dungeons and make changes as you 
+								see fit for your dungeon (for example: remove BFS if you do not wish to try it or try one of the other algorithms that BURLAP has).
+							<li>Your dungeon might also require you to add new actions or object classes. You can do this within the DomainGenerator classes within the domain generator package. 
+								The Real generator is currently being used for learning algorithms and the Simulated one for planning algorithms.
+							<li>In case you are trying algorithms other than BFS, AStar or RMax, create new Command classes for the algorithms within the command package. Once again, you can refer 
+								to the code written for the BFS, AStar and RMax command classes to write your own. Feel free to get as creative as you can!  
+						</ul>
 						<h3>
 							Useful Commands
 						</h3>
